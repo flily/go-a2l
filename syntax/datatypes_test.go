@@ -1,35 +1,8 @@
-package keywords
+package syntax
 
 import (
 	"testing"
 )
-
-func TestGetKeywordByName(t *testing.T) {
-	cases := []struct {
-		name    string
-		keyword Keyword
-	}{
-		{"PROJECT", PROJECT},
-		{"MODULE", MODULE},
-		{"A2ML", A2ML},
-		{"MEASUREMENT", MEASUREMENT},
-		{"FORMAT", FORMAT},
-		{"FORMULA", FORMULA},
-		{"LOREM", InvalidKeyword},
-	}
-
-	for _, c := range cases {
-		gotKw := GetKeywordByName(c.name)
-		if gotKw != c.keyword {
-			t.Errorf("GetKeywordByName(%q) == %s, want %s", c.name, gotKw, c.keyword)
-		}
-
-		gotStr := gotKw.String()
-		if c.keyword != InvalidKeyword && gotStr != c.name {
-			t.Errorf("Keyword.String() == %q, want %q", gotStr, c.name)
-		}
-	}
-}
 
 func TestGetDataTypeByName(t *testing.T) {
 	cases := []struct {
@@ -59,5 +32,12 @@ func TestGetDataTypeByName(t *testing.T) {
 		if c.dataType != InvalidDataType && gotStr != c.name {
 			t.Errorf("DataType.String() == %q, want %q", gotStr, c.name)
 		}
+	}
+}
+
+func TestFloat32ValueString(t *testing.T) {
+	v1 := NewFloat32Value(0)
+	if v1.ValueString() != "0.000000" {
+		t.Errorf("Float32Value(0).String() == %q, want %q", v1.ValueString(), "0.000000")
 	}
 }

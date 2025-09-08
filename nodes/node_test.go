@@ -1,64 +1,8 @@
 package nodes
 
 import (
-	"strings"
 	"testing"
 )
-
-func TestStringFormat(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected string
-	}{
-		{"", "\"\""},
-		{"hello", "hello"},
-		{"hello world", "\"hello world\""},
-	}
-
-	for _, test := range tests {
-		result := StringFormat(test.input)
-		if result != test.expected {
-			t.Errorf("StringFormat(%q) = %q; want %q", test.input, result, test.expected)
-		}
-	}
-}
-
-func TestStringCommentInLine(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected string
-	}{
-		{"", ""},
-		{"This is a comment.", "/* This is a comment. */"},
-	}
-
-	for _, test := range tests {
-		result := StringCommentInLine(test.input)
-		if result != test.expected {
-			t.Errorf("StringCommentInLine(%q) = %q; want %q", test.input, result, test.expected)
-		}
-	}
-}
-
-func TestStringCommentMultiLine(t *testing.T) {
-	text := strings.Join([]string{
-		"lorem ipsum dolor sit amet,",
-		"consectetur adipiscing elit.",
-		"sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-	}, "\n")
-
-	expected := strings.Join([]string{
-		"/*********************************************************************************",
-		" * lorem ipsum dolor sit amet,",
-		" * consectetur adipiscing elit.",
-		" * sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		" *********************************************************************************/",
-	}, "\n")
-	got := StringCommentMultiLine(text)
-	if got != expected {
-		t.Errorf("StringCommentMultiLine() =\n%q; want\n%q", got, expected)
-	}
-}
 
 func TestTaggedValueStringWith(t *testing.T) {
 	tag1 := NewTaggedValue(NoTag, "value1", "value2")

@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/flily/go-a2l/nodes"
+	"github.com/flily/go-a2l/strutil"
 )
 
 const (
@@ -52,7 +53,7 @@ func (d *Document) WriteOn(out io.Writer) (int, error) {
 	result, n := 0, 0
 
 	if len(d.Information) > 0 {
-		n, err = d.writeBlock(out, nodes.StringCommentMultiLine(d.Information))
+		n, err = d.writeBlock(out, strutil.CommentMultiLine(d.Information))
 		if err != nil {
 			return 0, err
 		}

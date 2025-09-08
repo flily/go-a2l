@@ -1,8 +1,7 @@
-package keywords
+package syntax
 
 type (
-	Keyword  int
-	DataType int
+	Keyword int
 )
 
 const (
@@ -191,18 +190,6 @@ const (
 	VERSION
 	VIRTUAL
 	VURTUAL_CHARACTERISTIC
-
-	InvalidDataType DataType = iota
-	UBYTE
-	SBYTE
-	UWORD
-	SWORD
-	ULONG
-	SLONG
-	A_UINT64
-	A_INT64
-	FLOAT32_IEEE
-	FLOAT64_IEEE
 )
 
 var (
@@ -404,40 +391,7 @@ var (
 
 	// reverse map for nameMapSecondaryKeyword, initialized in init()
 	stringMapSecondaryKeyword = map[Keyword]string{}
-
-	nameMapDataType = map[string]DataType{
-		"UBYTE":        UBYTE,
-		"SBYTE":        SBYTE,
-		"UWORD":        UWORD,
-		"SWORD":        SWORD,
-		"ULONG":        ULONG,
-		"SLONG":        SLONG,
-		"A_UINT64":     A_UINT64,
-		"A_INT64":      A_INT64,
-		"FLOAT32_IEEE": FLOAT32_IEEE,
-		"FLOAT64_IEEE": FLOAT64_IEEE,
-	}
-
-	stringMapDataType = map[DataType]string{}
 )
-
-func init() {
-	for k, v := range nameMapTopLevelKeyword {
-		stringMapTopLevelKeyword[v] = k
-	}
-
-	for k, v := range nameMapPrimaryKeyword {
-		stringMapPrimaryKeyword[v] = k
-	}
-
-	for k, v := range nameMapSecondaryKeyword {
-		stringMapSecondaryKeyword[v] = k
-	}
-
-	for k, v := range nameMapDataType {
-		stringMapDataType[v] = k
-	}
-}
 
 func (k Keyword) String() string {
 	if s, ok := stringMapTopLevelKeyword[k]; ok {
@@ -455,14 +409,6 @@ func (k Keyword) String() string {
 	return "InvalidKeyword"
 }
 
-func (t DataType) String() string {
-	if s, ok := stringMapDataType[t]; ok {
-		return s
-	}
-
-	return "InvalidDataType"
-}
-
 func GetKeywordByName(name string) Keyword {
 	if kw, ok := nameMapTopLevelKeyword[name]; ok {
 		return kw
@@ -477,12 +423,4 @@ func GetKeywordByName(name string) Keyword {
 	}
 
 	return InvalidKeyword
-}
-
-func GetDataTypeByName(name string) DataType {
-	if dt, ok := nameMapDataType[name]; ok {
-		return dt
-	}
-
-	return InvalidDataType
 }

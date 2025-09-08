@@ -79,12 +79,12 @@ type Node interface {
 }
 
 type FormatNode interface {
-	WriteTo(out io.Writer, indent string, level int, node Node) (int, error)
+	WriteTo(out io.Writer, indent string, level int) (int, error)
 }
 
 func WriteTo(out io.Writer, indent string, level int, node Node) (int, error) {
 	if fn, ok := node.(FormatNode); ok {
-		return fn.WriteTo(out, indent, level, node)
+		return fn.WriteTo(out, indent, level)
 	}
 
 	n := 0
@@ -105,8 +105,59 @@ func WriteTo(out io.Writer, indent string, level int, node Node) (int, error) {
 		result += n
 	}
 
+	children := node.Children()
+	for i := 0; i < len(children); i++ {
+		n, err := WriteTo(out, indent, level+1, children[i])
+		if err != nil {
+			return 0, err
+		}
+
+		fmt.Fprint(out, "\n")
+		result += n + 1
+	}
+
 	n, _ = fmt.Fprintf(out, "%s%s    %s", indentOut, DelimitorEnd, node.Keyword())
 	result += n
 
 	return result, nil
+}
+
+func WriteString(indent string, level int, node Node) (string, error) {
+	var sb strings.Builder
+	_, err := WriteTo(&sb, indent, level, node)
+	if err != nil {
+		return "", err
+	}
+
+	return sb.String(), nil
+}
+
+type NodeCommon struct {
+	keyword  syntax.Keyword
+	nodeType NodeType
+}
+
+func (n *NodeCommon) Keyword() Keyword {
+	return n.keyword
+}
+
+func (n *NodeCommon) NodeType() NodeType {
+	return n.nodeType
+}
+
+func NodeCommonInit(keyword syntax.Keyword, nodeType NodeType) NodeCommon {
+	n := NodeCommon{
+		keyword:  keyword,
+		nodeType: nodeType,
+	}
+
+	return n
+}
+
+func PrimaryNodeInit(keyword syntax.Keyword) NodeCommon {
+	return NodeCommonInit(keyword, NodeTypePrimary)
+}
+
+func SecondaryNodeInit(keyword syntax.Keyword) NodeCommon {
+	return NodeCommonInit(keyword, NodeTypeSecondary)
 }

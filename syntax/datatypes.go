@@ -2,6 +2,8 @@ package syntax
 
 import (
 	"fmt"
+
+	"github.com/flily/go-a2l/strutil"
 )
 
 type DataType int
@@ -61,6 +63,18 @@ func (t DataType) String() string {
 	}
 
 	return "InvalidDataType"
+}
+
+func (t DataType) Pick(valueInt int64, valueFloat float64) string {
+	switch t {
+	case UBYTE, SBYTE, UWORD, SWORD, ULONG, SLONG, A_UINT64, A_INT64:
+		return strutil.Number(valueInt)
+
+	case FLOAT32_IEEE, FLOAT64_IEEE:
+		return strutil.Number(valueFloat)
+	}
+
+	return ""
 }
 
 func GetDataTypeByName(name string) DataType {
@@ -246,16 +260,16 @@ func (v *Value) ValueString() string {
 
 	switch v.dataType {
 	case UBYTE, UWORD, ULONG, A_UINT64:
-		result = fmt.Sprintf("%d", v.valueUint)
+		result = strutil.Number(v.valueUint)
 
 	case SBYTE, SWORD, SLONG, A_INT64:
-		result = fmt.Sprintf("%d", v.valueInt)
+		result = strutil.Number(v.valueInt)
 
 	case FLOAT32_IEEE:
-		result = fmt.Sprintf("%f", v.valueFloat)
+		result = strutil.Number(v.valueFloat)
 
 	case FLOAT64_IEEE:
-		result = fmt.Sprintf("%f", v.valueDouble)
+		result = strutil.Number(v.valueDouble)
 
 	default:
 		err := fmt.Errorf("invalid data type: %v", v.dataType)

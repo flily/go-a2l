@@ -26,13 +26,11 @@ func TestCharacteristicWriteStringDefault(t *testing.T) {
 		"/end    CHARACTERISTIC",
 	}, "\n")
 
-	var sb strings.Builder
-	_, err := WriteTo(&sb, "  ", 0, cha)
+	got, err := WriteString("  ", 0, cha)
 	if err != nil {
 		t.Fatalf("WriteTo() error: %v", err)
 	}
 
-	got := sb.String()
 	if got != expected {
 		t.Errorf("Characteristic.WriteTo() =\n%s; want\n%s", got, expected)
 	}
@@ -60,13 +58,11 @@ func TestCharacteristicWriteString1(t *testing.T) {
 		"/end    CHARACTERISTIC",
 	}, "\n")
 
-	var sb strings.Builder
-	_, err := WriteTo(&sb, "  ", 0, cha)
+	got, err := WriteString("  ", 0, cha)
 	if err != nil {
 		t.Fatalf("WriteTo() error: %v", err)
 	}
 
-	got := sb.String()
 	if got != expected {
 		t.Errorf("Characteristic.WriteTo() =\n%s; want\n%s", got, expected)
 	}

@@ -18,6 +18,7 @@ const (
 )
 
 type Characteristic struct {
+	NodeCommon
 	Name              string
 	LongIdentifier    string
 	Type              string
@@ -32,20 +33,13 @@ var _ Node = (*Characteristic)(nil)
 
 func NewCharacteristic(name string, dataType syntax.DataType) *Characteristic {
 	c := &Characteristic{
-		Name:  name,
-		Type:  dataType.String(),
-		Value: syntax.NewValue(dataType),
+		NodeCommon: PrimaryNodeInit(syntax.CHARACTERISTIC),
+		Name:       name,
+		Type:       dataType.String(),
+		Value:      syntax.NewValue(dataType),
 	}
 
 	return c
-}
-
-func (c *Characteristic) Keyword() Keyword {
-	return syntax.CHARACTERISTIC
-}
-
-func (c *Characteristic) NodeType() NodeType {
-	return NodeTypePrimary
 }
 
 func (c *Characteristic) Values() []*TaggedValue {

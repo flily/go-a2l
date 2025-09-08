@@ -21,7 +21,7 @@ jobs:
         run: go mod download
 
       - name: Lint with golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v8
 
   run:
     name: Run unit tests and coverage tests

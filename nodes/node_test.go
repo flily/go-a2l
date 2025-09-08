@@ -1,6 +1,7 @@
 package nodes
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -36,6 +37,26 @@ func TestStringCommentInLine(t *testing.T) {
 		if result != test.expected {
 			t.Errorf("StringCommentInLine(%q) = %q; want %q", test.input, result, test.expected)
 		}
+	}
+}
+
+func TestStringCommentMultiLine(t *testing.T) {
+	text := strings.Join([]string{
+		"lorem ipsum dolor sit amet,",
+		"consectetur adipiscing elit.",
+		"sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+	}, "\n")
+
+	expected := strings.Join([]string{
+		"/*********************************************************************************",
+		" * lorem ipsum dolor sit amet,",
+		" * consectetur adipiscing elit.",
+		" * sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+		" *********************************************************************************/",
+	}, "\n")
+	got := StringCommentMultiLine(text)
+	if got != expected {
+		t.Errorf("StringCommentMultiLine() =\n%q; want\n%q", got, expected)
 	}
 }
 

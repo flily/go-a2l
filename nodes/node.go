@@ -112,7 +112,7 @@ func WriteTo(out io.Writer, indent string, level int, node Node) (int, error) {
 			return 0, err
 		}
 
-		fmt.Fprint(out, "\n")
+		_, _ = fmt.Fprint(out, "\n")
 		result += n + 1
 	}
 
